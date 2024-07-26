@@ -27,7 +27,7 @@ You will need a modern web browser to run this game on a Computer or on you Mobi
 ## Project Structure
 
 The project consists of the following main files:
-- `home.html`: The main HTML file that sets up the game container and includes necessary scripts.
+- `index.html`: The main HTML file that sets up the game container and includes necessary scripts.
 - `style.css`: The CSS file that styles the game elements.
 - `game.js`: The JavaScript file containing the game logic.
 
