@@ -1,13 +1,50 @@
+.mainScreen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+}
+.info {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+.infoSquare {
+    width: 50px;
+    height: 50px;
+    margin: 0 10px;
+    border: 1px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.red {
+    background-color: #000000;
+}
+
+.purple {
+    background-color: #f00c3d;
+}
+
+.green {
+    background-color: greenyellow;
+}
+
 body {
     margin: 0;
     overflow: hidden;
 }
+
 #gameContainer {
     width: 100vw;
     height: 100vh;
     position: relative;
     background-color: #f0f0f0;
 }
+
 #draggableBox {
     width: 25px;
     height: 25px;
@@ -17,13 +54,22 @@ body {
     top: 50%;
     left: 50%;
     /* transform: translate(-50%, -50%); */
-    touch-action: none; /* Prevent touch gestures */
+    touch-action: none;
+    /* Prevent touch gestures */
 }
+
 .enemies {
     position: absolute;
-    background-color: #ff004c;
+    background-color: #000000;
     border-radius: 5%;
 }
+
+.hearts {
+    position: absolute;
+    background-color: #f00cdd;
+    border-radius: 5%;
+}
+
 #timer {
     position: absolute;
     top: 10px;
@@ -32,6 +78,16 @@ body {
     font-weight: bold;
     z-index: 1;
 }
+
+#lives {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 1;
+}
+
 #gameOverScreen {
     position: absolute;
     top: 0;
@@ -49,6 +105,7 @@ body {
     display: none;
     z-index: 1;
 }
+
 #shareButton {
     margin-top: 5px;
     padding: 10px 20px;
@@ -58,7 +115,18 @@ body {
     border-radius: 5px;
     cursor: pointer;
 }
-#resetButton {
+
+#tryAgainButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#homeButton {
     margin-top: 20px;
     padding: 10px 20px;
     background-color: #4CAF50;
