@@ -2,13 +2,19 @@ const gameContainer = document.getElementById('gameContainer');
 const draggableBox = document.getElementById('draggableBox');
 const timerElement = document.getElementById('timer');
 const speedElement = document.getElementById('speed');
+const gameOverScreen = document.getElementById('gameOverScreen');
+const timeSurvived = document.getElementById('timeSurvived');
+const shareButton = document.getElementById('shareButton');
+const resetButton = document.getElementById('resetButton');
+
 let isDragging = false;
 let timer = 0;
 let interval;
 let shapeInterval;
 let shapes = [];
-const shapeSpeedIncrement = 0.001;
+const shapeSpeedIncrement = 0.01;
 let shapeSpeed = 1;
+let gameOver = false;
 
 draggableBox.addEventListener('mousedown', startDragging);
 draggableBox.addEventListener('touchstart', startDragging, { passive: false });
@@ -19,7 +25,17 @@ document.addEventListener('touchmove', drag, { passive: false });
 document.addEventListener('mouseup', stopDragging);
 document.addEventListener('touchend', stopDragging);
 
+shareButton.addEventListener('click', () => {
+    const text = `I survived ${timer.toFixed(2)} seconds in this focus test! Can you beat my score?`;
+    const url = document.location.href;
+    const shareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+    window.open(shareUrl, '_blank');
+});
+
+resetButton.addEventListener('click', resetGame);
+
 function startDragging(event) {
+    if (gameOver) return;
     isDragging = true;
     event.preventDefault();
     startGame();
@@ -34,7 +50,7 @@ function startGame() {
 }
 
 function drag(event) {
-    if (!isDragging) return;
+    if (!isDragging || gameOver) return;
 
     event.preventDefault();
 
@@ -70,6 +86,7 @@ function startTimer() {
             timer += 0.01;
             timerElement.textContent = timer.toFixed(2) + 's';
             increaseShapeSpeed();
+            checkCollisions();
         }, 10);
     }
 }
@@ -80,6 +97,7 @@ function stopTimer() {
 }
 
 function addRandomShape() {
+    if (gameOver) return;
     const shape = document.createElement('div');
     shape.classList.add('movingShape');
     shape.style.width = `${Math.random() * 50 + 20}px`;
@@ -100,6 +118,7 @@ function addRandomShape() {
 }
 
 function moveShapes() {
+    if (gameOver) return;
     shapes.forEach((shape, index) => {
         const rect = shape.element.getBoundingClientRect();
         const containerRect = gameContainer.getBoundingClientRect();
@@ -121,4 +140,49 @@ function increaseShapeSpeed() {
         shape.dy = shapeSpeed;
     });
     speedElement.textContent = shapeSpeed.toFixed(2);
+}
+
+function checkCollisions() {
+    const boxRect = draggableBox.getBoundingClientRect();
+
+    shapes.forEach(shape => {
+        const shapeRect = shape.element.getBoundingClientRect();
+
+        if (
+            boxRect.left < shapeRect.right &&
+            boxRect.right > shapeRect.left &&
+            boxRect.top < shapeRect.bottom &&
+            boxRect.bottom > shapeRect.top
+        ) {
+            endGame();
+        }
+    });
+}
+
+function endGame() {
+    gameOver = true;
+    stopTimer();
+    clearInterval(shapeInterval);
+    shapeInterval = null;
+    timeSurvived.textContent = timer.toFixed(2);
+    gameOverScreen.style.display = 'flex';
+}
+
+function resetGame() {
+    isDragging = false;
+    timer = 0;
+    interval;
+    shapeInterval;
+    shapeSpeed = 1;
+    gameOver = false;
+
+    shapes.forEach((shape, index) => {
+        // Remove shapes
+        shape.element.remove();
+    });
+    shapes = [];
+    gameOverScreen.style.display = 'none';
+    draggableBox.style.top = '50%';
+    draggableBox.style.left = '50%';
+    startGame()
 }
