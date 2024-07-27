@@ -99,5 +99,5 @@ class Routine {
 Feel free to customize the game by tweaking the JavaScript, CSS, and HTML files. Experiment with different enemy speeds, shapes, and styles to make the game your own. Share your customized versions with friends and challenge them to beat your high scores!
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the Creative Commons Zero v1.0 Universal License - see the LICENSE file for details.
 
